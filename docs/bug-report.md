@@ -1,19 +1,18 @@
-# Bug report exercise
+# Bug 报告实验：订单总额计算错误
 
-The order summary endpoint returns an incorrect total when an item quantity is greater than one.
+当某个商品的数量大于 1 时，订单摘要接口返回了错误的总金额。
 
-## Reproduction
+## 复现步骤 Reproduction
 
 ```text
 GET /orders/demo-100
-Expected total: 28.00
-Observed total: 15.50
+预期 total: 28.00
+实际 total: 15.50
 ```
 
-## Investigation questions
+## 排查问题 Investigation questions
 
-1. Which input and calculation path produce the mismatch?
-2. What regression test should be added before changing the implementation?
-3. Does the fix preserve the response contract and rounding behavior?
-4. What other boundary cases should be tested?
-
+1. 哪个输入和计算路径导致了预期值与实际值不一致？
+2. 修改实现前应该先增加什么回归测试？
+3. 修复是否保持了响应契约和四舍五入行为？
+4. 还应该覆盖哪些边界场景？

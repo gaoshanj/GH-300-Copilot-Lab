@@ -1,21 +1,21 @@
-# GH-300 Copilot Applied Lab
+# GH-300 Copilot 实战实验 Lab
 
-This public lab is a companion repository for a customized GH-300 workshop. It is designed for GitHub Codespaces and VS Code with GitHub Copilot enabled.
+这是定制版 GH-300 课程的配套公开实验仓库，面向已启用 GitHub Copilot 的 GitHub Codespaces 和 VS Code 环境。仓库中的英文名称、命令、API 路径和配置键保持原样，便于学员在真实开发工具中操作。
 
-## Learning path
+## 实验路线
 
 | Lab | Scenario | Expected outcome |
 |---|---|---|
-| 01 | Business request to code | Turn a structured request into a small FastAPI change |
-| 02 | Bug diagnosis | Use Agent mode and `/fix` to reproduce, explain, and repair a defect |
-| 03 | Test design | Generate boundary-focused tests and verify them with `pytest` |
-| 04 | Log analysis | Use Copilot Chat/CLI to correlate logs and write a concise bug report |
-| 05 | Code review | Review a change for correctness, security, and missing tests |
-| 06 | Team customization | Apply repository instructions, prompt files, and a custom agent |
+| 01 | Business request to code / 从业务需求到代码 | 将结构化业务需求转换为一个小型 FastAPI 改动 |
+| 02 | Bug diagnosis / Bug 定位 | 使用 Agent mode 和 `/fix` 复现、解释并修复缺陷 |
+| 03 | Test design / 测试设计 | 生成边界测试，并用 `pytest` 验证 |
+| 04 | Log analysis / 日志分析 | 使用 Copilot Chat/CLI 关联日志并形成 Bug 报告 |
+| 05 | Code review / 代码评审 | 检查正确性、安全性和测试缺口 |
+| 06 | Team customization / 团队定制 | 应用仓库指令、Prompt File 和自定义 Agent |
 
-The labs intentionally contain small, safe defects. Do not copy generated code directly to production: inspect the diff, run the tests, and make the final decision yourself.
+实验中故意保留了小型且安全的缺陷，用于练习排障闭环。不要直接把 Copilot 生成的代码用于生产环境：必须检查 Diff、运行测试，并由开发者做最终决定。
 
-## Start
+## 开始实验
 
 ```bash
 python -m venv .venv
@@ -28,21 +28,22 @@ uvicorn app.main:app --reload
 
 Open `http://127.0.0.1:8000/docs` to try the API.
 
-## Copilot setup
+打开 `http://127.0.0.1:8000/docs`，可以通过 Swagger UI 调用示例 API。
 
-1. Open this repository in GitHub Codespaces or VS Code.
-2. Sign in to GitHub and verify that Copilot Chat and Agent mode are available.
-3. Read `.github/copilot-instructions.md`.
-4. Use the prompt files under `.github/prompts/` as repeatable exercises.
-5. Treat tool calls, file edits, and test results as reviewable changes.
+## Copilot 环境准备
 
-## Safety and privacy
+1. 在 GitHub Codespaces 或 VS Code 中打开本仓库。
+2. 登录 GitHub，确认 Copilot Chat 和 Agent mode 可用。
+3. 阅读 `.github/copilot-instructions.md`，理解本项目的质量和安全要求。
+4. 使用 `.github/prompts/` 下的 Prompt File 重复练习。
+5. 把工具调用、文件修改和测试结果都当作需要审阅的变更。
 
-- Never place credentials, customer data, production logs, or personal data in prompts.
-- Review the repository's Copilot policy and content-exclusion settings before using similar patterns in a real organization.
-- The examples are educational and do not provide legal advice about copyright, licensing, or IP indemnity.
+## 安全与隐私
 
-## Suggested capstone
+- 不要把凭据、客户数据、生产日志或个人数据放入 Prompt。
+- 在真实组织中复用类似做法前，先检查组织的 Copilot Policy 和 Content Exclusion 设置。
+- 本仓库仅用于教学，不构成关于版权、许可证或 IP Indemnity 的法律建议。
 
-Start from `docs/business-request.md`, implement the endpoint, add tests, reproduce the defect in `docs/bug-report.md`, analyze `logs/api.log`, and open a pull request. Ask Copilot to review the PR and compare its findings with your own checklist.
+## 综合实战建议
 
+从 `docs/business-request.md` 开始，实现接口并补充测试；然后按照 `docs/bug-report.md` 复现缺陷，分析 `logs/api.log`，最后创建 Pull Request。让 Copilot Review 该 PR，并将它的发现与你的人工检查清单进行对比。

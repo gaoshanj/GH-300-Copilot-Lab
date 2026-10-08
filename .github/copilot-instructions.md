@@ -1,11 +1,10 @@
-# GH-300 lab instructions
+# GH-300 Lab 使用说明
 
-- Explain the plan before editing files.
-- Treat `docs/business-request.md` as the acceptance criteria for the checksum exercise.
-- Preserve the public API response shape unless the task explicitly requests a breaking change.
-- Prefer small, typed Python functions and explicit error handling.
-- For every behavior change, add or update a focused pytest test before declaring success.
-- Do not claim tests pass unless you ran `pytest -q` and inspected the result.
-- Never invent credentials, customer data, logs, or external API responses.
-- For security-sensitive suggestions, identify the threat, the assumption, and the verification step.
-
+- 修改文件前先用中文或英文解释实施计划。
+- 将 `docs/business-request.md` 作为 checksum 实验的验收标准。
+- 除非任务明确要求 Breaking Change，否则保持公开 API 的响应结构不变。
+- 优先使用小型、类型明确的 Python 函数和显式错误处理。
+- 每次行为变化都必须增加或更新针对性的 pytest 测试，然后才能说明任务完成。
+- 只有实际运行 `pytest -q` 并检查结果后，才能声称测试通过。
+- 不要编造凭据、客户数据、日志或外部 API 响应。
+- 对安全相关建议，说明威胁、前提假设和验证步骤。

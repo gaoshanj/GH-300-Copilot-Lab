@@ -1,10 +1,9 @@
 ---
 mode: agent
-description: Diagnose and repair one reproducible defect with a regression test.
+description: Diagnose and repair one reproducible defect with a regression test. 诊断并修复一个可复现缺陷，同时增加回归测试。
 ---
 
-Read `docs/bug-report.md`, the relevant implementation, and the existing tests.
-First explain the likely root cause and propose a regression test. Do not edit yet.
-After approval, implement the smallest fix, run the focused test and then the full
-test suite. Report changed files, evidence, and any remaining uncertainty.
-
+阅读 `docs/bug-report.md`、相关实现和现有测试。
+先解释可能的根因并提出回归测试，不要立即编辑文件。
+获得确认后，实现最小修复，先运行聚焦测试，再运行完整测试套件。
+报告变更文件、验证证据以及剩余的不确定性。
