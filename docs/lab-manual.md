@@ -383,9 +383,137 @@ uvicorn app.main:app --reload
 
 ---
 
+## Lab 07：将日志分析固化为可复用 Skill
+
+**目标**：把一次性的日志分析 Prompt 变成团队可共享、可版本控制、可复用的 Skill。
+
+**涉及能力**：Skills、结构化输出、证据和假设分离、日志脱敏。
+
+### 操作步骤
+
+1. 打开 `.github/skills/log-analysis-report/SKILL.md`，阅读目标、输入、步骤、输出格式和安全约束。
+2. 在 Copilot Chat 中发送：
+
+   ```text
+   请使用 .github/skills/log-analysis-report/SKILL.md 分析 logs/api.log。
+   只读取日志和 docs/bug-report.md，不修改任何文件。
+   输出中文 Bug 报告，并明确区分事实证据、根因假设和未知信息。
+   ```
+
+3. 检查报告是否包含症状、影响、时间线、复现步骤、回归测试和下一步。
+4. 追问：
+
+   ```text
+   请逐条标注你的结论来自哪一行日志。
+   没有日志证据的内容改写为“需要验证的假设”。
+   不要输出任何可能的密钥、Cookie、个人数据或完整请求体。
+   ```
+
+5. 将报告保存为临时文件或复制到 Issue 草稿中；不要覆盖原始 `logs/api.log`。
+6. 修改一条 Skill 规则，例如增加“必须报告请求耗时”，再次运行并比较输出是否稳定。
+7. 检查 Git Diff，确认只修改了 Skill 或报告草稿，没有把敏感日志提交到仓库。
+
+### 预期结果
+
+- 同一份日志在不同会话中遵循相同报告结构。
+- 报告能区分事实、推断和未知信息。
+- Skill 可以被其他成员或 Agent 复用，而不需要重新粘贴完整操作规范。
+
+### 完成标准
+
+学员提交一份结构化 Bug 报告，并能说明 Skill 中哪条规则防止了臆测或敏感信息泄露。
+
+---
+
+## Lab 08：优化 Token 成本并比较前后差异
+
+**目标**：通过压缩上下文、缓存稳定规则和复用 Skill，减少重复输入；同时保留验收标准和关键证据。
+
+**重要说明**：本实验使用透明的估算脚本，不代表 GitHub Copilot 的实际账单。实际消耗和价格取决于产品、模型、账户策略、输入/输出 Token 以及缓存规则。
+
+**涉及能力**：Context engineering、context caching、context compression、Skills、成本度量。
+
+### 操作步骤
+
+1. 先运行基线估算：
+
+   ```bash
+   python tools/token_cost_demo.py
+   ```
+
+2. 记录输出中的：
+
+   - `Baseline input tokens`
+   - `Optimized input tokens`
+   - `Tokens saved`
+   - `Baseline cost proxy`
+   - `Optimized cost proxy`
+   - `With cached context`
+
+3. 观察脚本中的基线上下文。它把 README、业务需求、Bug 报告、完整实验手册、日志和仓库指令全部拼接到一次请求中，模拟“把所有内容都贴给 Copilot”的低效方式。
+4. 打开 `.github/skills/context-optimizer/SKILL.md`，用以下提示词让 Copilot 设计压缩方案：
+
+   ```text
+   请使用 .github/skills/context-optimizer/SKILL.md。
+   比较 tools/token_cost_demo.py 中的 baseline 和 optimized 上下文。
+   说明哪些内容被删除、压缩或移入 Skill，哪些验收标准和证据必须保留。
+   不要修改文件，先输出 Context 优化报告。
+   ```
+
+5. 对比两种上下文的组成：
+
+   | 方式 | 上下文内容 | 适用场景 |
+   |---|---|---|
+   | Baseline | 所有背景文档、完整手册、完整日志和规则 | 初次探索，但重复内容多 |
+   | Compressed | 任务 Skill、相关 Bug 报告、必要日志和输出格式 | 已明确目标的任务 |
+   | Cached | 稳定规则放入 Skill，重复请求只传变化部分 | 团队长期复用 |
+
+6. 修改 `tools/token_cost_demo.py` 的 `load_optimized`，只保留完成 Lab 07 所需的最小证据，再运行脚本。
+7. 使用不同价格参数做敏感性分析：
+
+   ```bash
+   python tools/token_cost_demo.py --input-rate 0.00001
+   python tools/token_cost_demo.py --input-rate 0.00001 --cached-discount 0.95
+   ```
+
+8. 验证优化没有损失任务目标：
+
+   ```text
+   使用优化后的上下文生成日志报告。
+   必须仍然输出：事实证据、时间线、根因假设、复现步骤、回归测试和下一步。
+   将结果与 Lab 07 的报告逐项比较，不要只比较字数。
+   ```
+
+9. 记录一张前后对比表：
+
+   | 指标 | 优化前 | 优化后 | 结论 |
+   |---|---:|---:|---|
+   | 估算输入 Token | 运行脚本填写 | 运行脚本填写 | 是否减少 |
+   | 成本代理值 | 运行脚本填写 | 运行脚本填写 | 是否降低 |
+   | 必需证据是否完整 | 是/否 | 是/否 | 是否可接受 |
+   | 报告结构是否稳定 | 是/否 | 是/否 | 是否可复用 |
+
+### 预期结果
+
+- 优化后的估算输入 Token 少于基线。
+- 使用 Skill 后，重复的操作规范不需要每轮重新粘贴。
+- 缓存适合稳定、不含敏感信息的规则和格式，不应缓存一次性的客户数据或生产日志。
+- 优化后仍保留业务目标、验收标准、错误证据和安全约束。
+
+### 完成标准
+
+学员提交前后成本对比表，并明确写出：
+
+1. 哪些内容被压缩或移入 Skill；
+2. 哪些内容不能删除；
+3. 估算值与真实 Copilot 消耗的差异；
+4. 优化后如何证明输出质量没有下降。
+
+---
+
 ## 综合验收
 
-完成 6 个实验后，学员应能走通以下闭环：
+完成 8 个实验后，学员应能走通以下闭环：
 
 ```text
 业务需求
@@ -395,6 +523,8 @@ uvicorn app.main:app --reload
   → Bug 复现与修复
   → 日志分析
   → Code Review
+  → 可复用的日志报告 Skill
+  → 上下文压缩与成本度量
   → 可共享的团队规则
 ```
 

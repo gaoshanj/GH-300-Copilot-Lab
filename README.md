@@ -14,6 +14,8 @@
 | 04 | Log analysis / 日志分析 | 使用 Copilot Chat/CLI 关联日志并形成 Bug 报告 |
 | 05 | Code review / 代码评审 | 检查正确性、安全性和测试缺口 |
 | 06 | Team customization / 团队定制 | 应用仓库指令、Prompt File 和自定义 Agent |
+| 07 | Reusable log-report Skill / 可复用日志报告 Skill | 将测试日志稳定转换为有证据的中文 Bug 报告 |
+| 08 | Token optimization / Token 成本优化 | 对比完整上下文、压缩上下文、缓存和 Skill 化后的成本代理值 |
 
 实验中故意保留了小型且安全的缺陷，用于练习排障闭环。不要直接把 Copilot 生成的代码用于生产环境：必须检查 Diff、运行测试，并由开发者做最终决定。
 
