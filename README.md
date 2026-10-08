@@ -4,6 +4,8 @@
 
 ## 实验路线
 
+完整的中文逐步操作手册见 [`docs/lab-manual.md`](docs/lab-manual.md)。课堂讲师可以按 Lab 01 到 Lab 06 顺序授课，学员可以逐项对照“预期结果”和“完成标准”自检。
+
 | Lab | Scenario | Expected outcome |
 |---|---|---|
 | 01 | Business request to code / 从业务需求到代码 | 将结构化业务需求转换为一个小型 FastAPI 改动 |
