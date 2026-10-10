@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: Diagnose and repair one reproducible defect with a regression test. 诊断并修复一个可复现缺陷，同时增加回归测试。
 ---
 
